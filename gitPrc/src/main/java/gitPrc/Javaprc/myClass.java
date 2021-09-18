@@ -7,6 +7,7 @@ public class myClass {
 		System.out.println("I am new to Java");
 		System.out.println("I have sucessfully integrate eclipse and gitHub");
 		System.out.println("Another Git Practice");
+		System.out.println("Pushing to EclipseCode Branch");
 
 	}
 

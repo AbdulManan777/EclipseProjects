@@ -6,6 +6,7 @@ public class myClass {
 		// TODO Auto-generated method stub
 		System.out.println("I am new to Java");
 		System.out.println("I have sucessfully integrate eclipse and gitHub");
+		System.out.println("Another Git Practice");
 
 	}
 

@@ -1,0 +1,86 @@
+<html>
+
+<head>
+<title>Database connection </title>
+</head>
+
+<body>
+<h1> Enter records of Employee</h1><br/>
+<form method="post" action="Insertion.php">
+Emp_Name:<input type="text" name="Emp_Name" />
+Emp_Num:<input type="text" name="Emp_Num"/></br></br>
+Job___Title:<input type="text" name="Job___Title"/>
+ManagerID:<input type="text" name="ManagerID"/></br></br>
+HIREDATE:<input type="text" name="HIREDATE"/>
+Salary____:<input type="text" name="Salary____"/></br></br>
+Commision:<input type="text" name="Commision"/>
+Dept_No__:<input type="text" name="Dept_No__"/></br></br>
+<input type="Submit" name="button" value="Save to Database"/>
+</form>
+
+<?php  // creating a database connection 
+
+
+   $db_sid = 
+   "(DESCRIPTION =
+   (ADDRESS = (PROTOCOL = TCP)(HOST = DESKTOP-ACRS7JE.Home)(PORT = 1521))
+   (CONNECT_DATA =
+     (SERVER = DEDICATED)
+     (SERVICE_NAME = ejazz)
+   )
+ )";            // Your oracle SID, can be found in tnsnames.ora  ((oraclebase)\app\Your_username\product\11.2.0\dbhome_1\NETWORK\ADMIN) 
+  
+   $db_user = "scott";   // Oracle username e.g "scott"
+   $db_pass = "1234";    // Password for user e.g "1234"
+   $con = oci_connect($db_user,$db_pass,$db_sid); 
+   if($con) 
+      { echo "Oracle Connection Successful."; } 
+   else 
+      { die('Could not connect to Oracle: '); } 
+      
+     $Emp_Name=$_POST["Emp_Name"];
+     $Emp_Num=$_POST["Emp_Num"];
+     $Job___Title=$_POST["Job___Title"];
+     $ManagerID=$_POST["ManagerID"];
+     $HIREDATE=$_POST["HIREDATE"];
+     $Salary____=$_POST["Salary____"];
+     $Commision=$_POST["Commision"];
+     $Dept_No__=$_POST["Dept_No__"];
+    // $btn=$_POST["button"];
+     if(isset($_POST['button'])){
+	 $q = "insert into Emp
+           values('$Emp_Num','$Emp_Name','$Job___Title','$ManagerID','$HIREDATE','$Salary____','$Commision','$Dept_No__')";
+	 $query_id = oci_parse($con, $q); 
+
+	 $r = oci_execute($query_id); 
+   
+   if($r)
+	 {
+     echo"<br>";
+     echo"Insertion successful";
+     //$id=$_POST["Emp_Num"];
+		 $q2 = "SELECT * FROM EMP where EMPNO='$_POST[Emp_Num]'";
+		 $query_id2 = oci_parse($con, $q2); 		
+		 $r2 = oci_execute($query_id2); 
+				
+			 echo "<hr>";
+			 echo " Emp_NO"."__________"."Emp_Name"."__________"."Hiredate";
+			 echo "<br>";
+			 echo "<hr>";
+
+			 while($row = oci_fetch_array($query_id2)) 
+			 { 
+				echo $row[0]."------------------".$row["ENAME"]. "----------------" .$row[4] ."<br>" ; 
+			 }
+	 }
+	 else
+	 {
+		 echo "Record not inserted!<br>";
+		 $e = oci_error($query_id);  
+		 echo $e['message'];
+	 }
+     }
+?>
+
+</body>
+</html>
